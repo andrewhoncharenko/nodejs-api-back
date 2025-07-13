@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const multer = require("multer");
 
-const userRoutes = require("./routes/user");
+const authRoutes = require("./routes/auth");
 const feedRoutes = require("./routes/feed");
 
 const app = express();
@@ -38,11 +38,11 @@ app.use((request, response, next) => {
     next();
 });
 
-app.use("/user", userRoutes)
+app.use("/auth", authRoutes)
 app.use("/feed", feedRoutes);
 
 app.use((error, request, response, next) => {
-    const status = error.statusCod || 500;
+    const status = error.statusCode || 500;
     const message = error.message;
 
     console.log(error);
