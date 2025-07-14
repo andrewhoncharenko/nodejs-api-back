@@ -3,6 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const multer = require("multer");
+const io = require("./socket");
 
 const authRoutes = require("./routes/auth");
 const feedRoutes = require("./routes/feed");
@@ -52,7 +53,12 @@ app.use((error, request, response, next) => {
 
 mongoose.connect("mongodb://localhost:27017/messages")
 .then(() => {
-    app.listen(8080);
+    const server = app.listen(8080);
+    const socketio = io.init(server);
+    socketio.on("connection", socket => {
+        console.log("Client connected");
+    });
+
 })
 .catch(error => {
     console.log(error);
